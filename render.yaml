@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: face-detect-url-api
+    runtime: node
+    rootDir: face-detect-url-api-master
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: CLARIFAI_API_KEY
+        sync: false
+      - key: PORT
+        value: "10000"
+    disk:
+      name: face-detect-url-data
+      mountPath: /opt/render/project/src/face-detect-url-api-master/data
+      sizeGB: 1
