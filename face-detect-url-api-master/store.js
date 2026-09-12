@@ -1,30 +1,23 @@
-const fs = require("fs");
-const path = require("path");
+const Redis = require("ioredis");
 
-const dataDirectory = path.join(__dirname, "data");
-const dataFile = path.join(dataDirectory, "store.json");
+// REDIS_URL should be the internal connection string from your Render
+// Key Value (Valkey) instance, e.g. redis://red-xxxxxxxx:6379
+const redis = new Redis(process.env.REDIS_URL || "redis://127.0.0.1:6379");
 
-const ensureStore = () => {
-  fs.mkdirSync(dataDirectory, { recursive: true });
-  if (!fs.existsSync(dataFile)) {
-    fs.writeFileSync(dataFile, JSON.stringify({ users: [] }, null, 2));
-  }
+const userKey = (id) => `user:${id}`;
+const emailKey = (email) => `email:${String(email).toLowerCase()}`;
+
+const findUserById = async (id) => {
+  const data = await redis.hgetall(userKey(id));
+  if (!data || !data.id) return null;
+  return { ...data, entries: Number(data.entries) };
 };
 
-const readStore = () => {
-  ensureStore();
-  return JSON.parse(fs.readFileSync(dataFile, "utf8"));
+const findUserByEmail = async (email) => {
+  const id = await redis.get(emailKey(email));
+  if (!id) return null;
+  return findUserById(id);
 };
-
-const writeStore = (store) => {
-  ensureStore();
-  fs.writeFileSync(dataFile, JSON.stringify(store, null, 2));
-};
-
-const findUserByEmail = (email) =>
-  readStore().users.find((user) => user.email === email);
-
-const findUserById = (id) => readStore().users.find((user) => user.id === id);
 
 const publicUser = (user) => {
   if (!user) return null;
@@ -32,28 +25,35 @@ const publicUser = (user) => {
   return safeUser;
 };
 
-const createUser = ({ email, name, hash }) => {
-  const store = readStore();
+const createUser = async ({ email, name, hash }) => {
+  const existingId = await redis.get(emailKey(email));
+  if (existingId) {
+    const err = new Error("email already registered");
+    err.code = "EMAIL_TAKEN";
+    throw err;
+  }
+
+  const id = String(Date.now());
   const user = {
-    id: String(Date.now()),
+    id,
     email,
     name,
     hash,
     entries: 0,
     joined: new Date().toISOString(),
   };
-  store.users.push(user);
-  writeStore(store);
+
+  await redis.hset(userKey(id), user);
+  await redis.set(emailKey(email), id);
+
   return publicUser(user);
 };
 
-const incrementEntries = (id) => {
-  const store = readStore();
-  const user = store.users.find((candidate) => candidate.id === id);
-  if (!user) return null;
-  user.entries += 1;
-  writeStore(store);
-  return user.entries;
+const incrementEntries = async (id) => {
+  const exists = await redis.exists(userKey(id));
+  if (!exists) return null;
+  const entries = await redis.hincrby(userKey(id), "entries", 1);
+  return entries;
 };
 
 module.exports = {

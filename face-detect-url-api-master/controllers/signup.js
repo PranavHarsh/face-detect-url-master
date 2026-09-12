@@ -1,14 +1,18 @@
-const handleSignup = (req, res, store, bcrypt) => {
+const handleSignup = async (req, res, store, bcrypt) => {
   const { email, name, password } = req.body;
   if (!email || !name || !password) {
     return res.status(400).json("incorrect form submission");
   }
-  if (store.findUserByEmail(email))
-    return res.status(409).json("email already registered");
   try {
-    res.json(
-      store.createUser({ email, name, hash: bcrypt.hashSync(password) }),
-    );
+    const existing = await store.findUserByEmail(email);
+    if (existing) return res.status(409).json("email already registered");
+
+    const user = await store.createUser({
+      email,
+      name,
+      hash: bcrypt.hashSync(password),
+    });
+    res.json(user);
   } catch (err) {
     res.status(400).json("unable to register");
   }

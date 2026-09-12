@@ -19,11 +19,15 @@ const handleApiCall = (req, res) => {
     .catch((err) => res.status(400).json("unable to work with API"));
 };
 
-const handleImage = (req, res, store) => {
+const handleImage = async (req, res, store) => {
   const { id } = req.body;
-  const entries = store.incrementEntries(id);
-  if (entries === null) return res.status(404).json("user not found");
-  res.json(entries);
+  try {
+    const entries = await store.incrementEntries(id);
+    if (entries === null) return res.status(404).json("user not found");
+    res.json(entries);
+  } catch (err) {
+    res.status(500).json("unable to update entries");
+  }
 };
 
 module.exports = {
