@@ -1,0 +1,5 @@
+workspace:
+  id: f7f9c5d5-c062-4f2b-9601-a6527d5e6734
+cloudResources:
+  globals:
+    ../postman/globals/workspace.globals.yaml: 8454f999-4bad-43a4-89ca-bc045d56a30b
