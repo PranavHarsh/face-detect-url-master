@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: face-detect-url-api
+    runtime: node
+    buildCommand: cd face-detect-url-api-master && npm install
+    startCommand: cd face-detect-url-api-master && npm start
+    envVars:
+      - key: CLARIFAI_API_KEY
+        sync: false
+      - key: PORT
+        value: "10000"
+      - key: REDIS_URL
+        sync: false
