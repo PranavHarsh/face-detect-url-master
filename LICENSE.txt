@@ -1,0 +1,28 @@
+Copyright (c) 2026 Pranav Harsh. All rights reserved.
+
+This software and its source code, including the website (React front end),
+the link-safety checker and the API in "face-detect-url-api-master", the
+design, text and all other original material in this repository
+("the Software"), are the exclusive property of Pranav Harsh.
+
+No licence or permission is granted to anyone to use, copy, modify, merge,
+publish, distribute, sublicense, sell, host, mirror, or create derivative works
+from the Software, in whole or in part, in source or compiled form, for any
+purpose, without prior written permission from Pranav Harsh.
+
+Viewing the public website and reading the source code in this repository is
+permitted for personal, non-commercial evaluation only (for example, by
+employers or reviewers). Nothing here grants any right to reuse it.
+
+Third-party components bundled with the Software (listed in NOTICE) remain the
+property of their owners and are used under their own licences, which this
+notice does not change.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM THE
+USE OF THE SOFTWARE. LINK-SAFETY RESULTS ARE ADVISORY ONLY AND ARE NOT A
+GUARANTEE THAT A LINK IS OR IS NOT SAFE.
+
+Contact for permission: https://github.com/PranavHarsh

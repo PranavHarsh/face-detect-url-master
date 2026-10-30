@@ -1,0 +1,10 @@
+Third-party components (not covered by the "All rights reserved" notice in LICENSE;
+each keeps its own licence and copyright):
+
+- face-api.js, @vladmandic/face-api 1.7.15 (MIT, Vladimir Mandic) and the Tiny Face
+  Detector model weights it ships: public/face/  (licence text: public/face/LICENSE-face-api.txt)
+- React, React DOM, tachyons, react-particles-js, react-scripts (MIT)
+- API dependencies: express, cors, ioredis, undici, sharp, tldts, bcrypt-nodejs
+  (see each package's licence in node_modules)
+- Threat lists read at run time: OpenPhish, PhishTank, malware-filter, URLhaus,
+  Tranco top sites list, IANA/RDAP. Used under their own terms; not redistributed.
